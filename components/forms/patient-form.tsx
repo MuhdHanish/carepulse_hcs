@@ -29,8 +29,7 @@ export const PatientForm = () => {
   function onSubmit(values: z.infer<typeof UserFormSchema>) {
     startTransition(async () => {
       const user = await createUser(values);
-      console.log({ user });
-      // if (user) router.push(`/patients/${user.$id}/register`);
+      if (user) router.push(`/patients/${user?.$id}/register`);
     });
   }
   return (
