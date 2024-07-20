@@ -8,15 +8,14 @@ import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
 import { CustomFormField } from "../custom-form-field";
-import { EFormFieldType } from "@/types";
 import { SubmitButton } from "../submit-button";
-import { patientFormSchema } from "@/lib/validation/patient-form.validation";
+import { UserFormSchema } from "@/lib/validation";
 
 export const PatientForm = () => {
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof patientFormSchema>>({
-    resolver: zodResolver(patientFormSchema),
+  const form = useForm<z.infer<typeof UserFormSchema>>({
+    resolver: zodResolver(UserFormSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -24,7 +23,7 @@ export const PatientForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof patientFormSchema>) {
+  function onSubmit(values: z.infer<typeof UserFormSchema>) {
     startTransition(async () => {
       console.log(values);
     });
