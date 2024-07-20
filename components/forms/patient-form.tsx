@@ -1,17 +1,20 @@
 "use client";
 
 import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
-import { CustomFormField } from "../custom-form-field";
+import { CustomFormField, EFormFieldType } from "../custom-form-field";
 import { SubmitButton } from "../submit-button";
 import { UserFormSchema } from "@/lib/validation";
+import { createUser } from "@/lib/actions/patient.actions";
 
 export const PatientForm = () => {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof UserFormSchema>>({
@@ -25,7 +28,9 @@ export const PatientForm = () => {
 
   function onSubmit(values: z.infer<typeof UserFormSchema>) {
     startTransition(async () => {
-      console.log(values);
+      const user = await createUser(values);
+      console.log({ user });
+      // if (user) router.push(`/patients/${user.$id}/register`);
     });
   }
   return (
