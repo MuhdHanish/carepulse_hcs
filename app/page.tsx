@@ -11,7 +11,7 @@ export default function Home() {
             src={`/assets/icons/logo-full.svg`}
             height={1000}
             width={1000}
-            alt="paitent"
+            alt="logo"
             className="mb-12 h-10 w-fit"
           />
           <PatientForm />
@@ -21,6 +21,13 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Image
+        src={`/assets/images/onboarding-img.png`}
+        height={1000}
+        width={1000}
+        alt="onboarding-image"
+        className="side-img max-w-[50%]"
+      />
     </div>
   );
 }
