@@ -1,7 +1,8 @@
 import { z } from "zod";
 
-export const patientFormSchema = z.object({
-  name: z.string()
+export const UserFormSchema = z.object({
+  name: z
+    .string()
     .min(2, {
       message: "Name must be at least 2 characters.",
     })
