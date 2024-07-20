@@ -10,24 +10,13 @@ import { Form } from "@/components/ui/form";
 import { CustomFormField } from "../custom-form-field";
 import { EFormFieldType } from "@/types";
 import { SubmitButton } from "../submit-button";
-
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
-  email: z.string().email({
-    message: "Invalid email address.",
-  }),
-  phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, {
-    message: "Invalid phone number.",
-  }),
-});
+import { patientFormSchema } from "@/lib/validation/patient-form.validation";
 
 export const PatientForm = () => {
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof patientFormSchema>>({
+    resolver: zodResolver(patientFormSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -35,7 +24,7 @@ export const PatientForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof patientFormSchema>) {
     startTransition(async () => {
       console.log(values);
     });
