@@ -76,7 +76,7 @@ const RenderField = ({
         <FormControl>
           <PhoneInput
             placeholder={placeholder}
-            defaultCountry="US"
+            defaultCountry="IN"
             {...field}
             international
             className="input-phone"
