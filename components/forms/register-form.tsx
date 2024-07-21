@@ -17,15 +17,15 @@ import { SelectItem } from "@/components/ui/select";
 import { FileUploader } from "../file-uploader";
 
 import { Doctors, GenderOptions, IdentificationTypes } from "@/constance";
-import { UserFormSchema } from "@/lib/validation";
+import { UserFormValidation } from "@/lib/validation";
 import { createUser } from "@/lib/actions/patient.actions";
 
 export const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof UserFormSchema>>({
-    resolver: zodResolver(UserFormSchema),
+  const form = useForm<z.infer<typeof UserFormValidation>>({
+    resolver: zodResolver(UserFormValidation),
     defaultValues: {
       name: "",
       email: "",
@@ -33,7 +33,7 @@ export const RegisterForm = ({ user }: { user: User }) => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof UserFormSchema>) {
+  function onSubmit(values: z.infer<typeof UserFormValidation>) {
     startTransition(async () => {
       const user = await createUser(values);
       if (user) router.push(`/patients/${user?.$id}/register`);
