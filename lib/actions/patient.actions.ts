@@ -14,7 +14,7 @@ import {
 import { parseStringify } from "../utils";
 import { InputFile } from "node-appwrite/file";
 
-export const createUser = async (user: CreateUserParams) => {
+export const createUser = async (user: CreateUserParams): Promise<User> => {
   const { name, email, phone } = user;
   try {
     const newUser = await users.create(
