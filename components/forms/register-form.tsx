@@ -49,7 +49,7 @@ export const RegisterForm = ({ user }: { user: User }) => {
           formData.append("blobFile", blobFile);
           formData.append("fileName", values.identificationDocument[0]?.name);
         }
-        const patientData = {
+        const patientData: RegisterUserParams = {
           ...values,
           userId: user?.$id,
           birthDate: new Date(values.birthDate),
