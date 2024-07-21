@@ -1,7 +1,10 @@
+import { RegisterForm } from "@/components/forms/register-form";
+import { getUser } from "@/lib/actions/patient.actions";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Register() {
+export default async function Register({ params: { userId } }: SearchParamProps) {
+  const user = await getUser(userId);
   return (
     <div className="flex h-screen max-h-screen">
       <section className="remove-scrollbar container my-auto">
@@ -13,6 +16,7 @@ export default function Register() {
             alt="logo"
             className="mb-12 h-10 w-fit"
           />
+          <RegisterForm user={user}/>
           <div className="text-14-regular mt-20 flex justify-between">
             <p className="justify-items-end text-dark-600 xl:text-left">© 2024 CarePluse</p>
             <Link href={`/?admin=true`} className="text-green-500">Admin</Link>
