@@ -18,6 +18,7 @@ import PhoneInput from "react-phone-number-input";
 
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 
 export enum EFormFieldType {
   INPUT = "input",
@@ -45,7 +46,7 @@ type TCustomFormFieldProps = {
 };
 
 const RenderField = ({ field, props }: { field: any; props: TCustomFormFieldProps; }) => {
-  const { name, fieldType, placeholder, iconSrc, iconAlt, showTimeSelect, dateFormat, renderSkeleton } = props;
+  const { name, fieldType, placeholder, iconSrc, iconAlt, showTimeSelect, dateFormat, renderSkeleton, children } = props;
   switch (fieldType) {
     case EFormFieldType.INPUT:
       return (
@@ -105,6 +106,25 @@ const RenderField = ({ field, props }: { field: any; props: TCustomFormFieldProp
     case EFormFieldType.SKELETON:
       return (
         renderSkeleton ? renderSkeleton(field) : null
+      );
+    case EFormFieldType.SELECT:
+      return (
+        <FormControl>
+          <Select
+            onValueChange={field.onChange}
+            defaultValue={field.value}
+          >
+            <FormControl>
+              <SelectTrigger className="shad-select-trigger">
+                <SelectValue placeholder={placeholder} />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent
+              className="shad-select-content">
+              {children}
+            </SelectContent>
+          </Select>
+        </FormControl>
       );
     default:
       break;
