@@ -28,8 +28,12 @@ export const PatientForm = () => {
 
   function onSubmit(values: z.infer<typeof UserFormValidation>) {
     startTransition(async () => {
-      const user = await createUser(values);
-      if (user) router.push(`/patients/${user?.$id}/register`);
+      try {
+        const user = await createUser(values);
+        if (user) router.push(`/patients/${user?.$id}/register`);
+      } catch (error) {
+        console.error(error);
+      }
     });
   }
   return (
