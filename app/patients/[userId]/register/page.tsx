@@ -23,7 +23,7 @@ export default async function Register({ params: { userId } }: SearchParamProps)
         src={`/assets/images/register-img.png`}
         height={1000}
         width={1000}
-        alt="register-image"
+        alt="register-side-image"
         className="side-img max-w-[390px]"
       />
     </div>
