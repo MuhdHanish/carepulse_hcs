@@ -10,15 +10,15 @@ import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import { CustomFormField, EFormFieldType } from "../custom-form-field";
 import { SubmitButton } from "../submit-button";
-import { UserFormSchema } from "@/lib/validation";
+import { UserFormValidation } from "@/lib/validation";
 import { createUser } from "@/lib/actions/patient.actions";
 
 export const PatientForm = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof UserFormSchema>>({
-    resolver: zodResolver(UserFormSchema),
+  const form = useForm<z.infer<typeof UserFormValidation>>({
+    resolver: zodResolver(UserFormValidation),
     defaultValues: {
       name: "",
       email: "",
@@ -26,7 +26,7 @@ export const PatientForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof UserFormSchema>) {
+  function onSubmit(values: z.infer<typeof UserFormValidation>) {
     startTransition(async () => {
       const user = await createUser(values);
       if (user) router.push(`/patients/${user?.$id}/register`);
