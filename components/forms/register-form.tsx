@@ -16,7 +16,12 @@ import { Label } from "@/components/ui/label";
 import { SelectItem } from "@/components/ui/select";
 import { FileUploader } from "../file-uploader";
 
-import { Doctors, GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "@/constance";
+import {
+  Doctors,
+  GenderOptions,
+  IdentificationTypes,
+  PatientFormDefaultValues,
+} from "@/constance";
 import { PatientFormValidation } from "@/lib/validation";
 import { registerPatient } from "@/lib/actions/patient.actions";
 
@@ -33,11 +38,13 @@ export const RegisterForm = ({ user }: { user: User }) => {
     startTransition(async () => {
       try {
         let formData;
-        if (values.identificationDocument && values.identificationDocument?.length > 0) {
-          const blobFile = new Blob(
-            [values.identificationDocument[0]],
-            { type: values.identificationDocument[0]?.type }
-          );
+        if (
+          values.identificationDocument &&
+          values.identificationDocument?.length > 0
+        ) {
+          const blobFile = new Blob([values.identificationDocument[0]], {
+            type: values.identificationDocument[0]?.type,
+          });
           formData = new FormData();
           formData.append("blobFile", blobFile);
           formData.append("fileName", values.identificationDocument[0]?.name);
@@ -46,7 +53,7 @@ export const RegisterForm = ({ user }: { user: User }) => {
           ...values,
           userId: user?.$id,
           birthDate: new Date(values.birthDate),
-          identificationDocument: formData
+          identificationDocument: formData,
         };
         const patient = await registerPatient(patientData);
         if (patient) router.push(`/patients/${user?.$id}/new-appointment`);
@@ -168,29 +175,26 @@ export const RegisterForm = ({ user }: { user: User }) => {
         <CustomFormField
           control={form.control}
           fieldType={EFormFieldType.SELECT}
-          name="primaryPhisician"
+          name="primaryPhysician"
           label="Primary physician"
           placeholder="Select a physician"
         >
-          {
-            Doctors.map((doctor, index) => (
-              <SelectItem
-                key={`${doctor?.name}-${index}`}
-                value={doctor?.name}
-              >
-                <div className="flex cursor-pointer items-center gap-2">
-                  {doctor?.image && <Image
+          {Doctors.map((doctor, index) => (
+            <SelectItem key={`${doctor?.name}-${index}`} value={doctor?.name}>
+              <div className="flex cursor-pointer items-center gap-2">
+                {doctor?.image && (
+                  <Image
                     src={doctor?.image}
                     width={32}
                     height={32}
                     alt={doctor?.name ?? "doctor-image"}
                     className="rounded-full"
-                  />}
-                  <p>{doctor?.name}</p>
-                </div>
-              </SelectItem>
-            ))
-          }
+                  />
+                )}
+                <p>{doctor?.name}</p>
+              </div>
+            </SelectItem>
+          ))}
         </CustomFormField>
         <div className="flex flex-col gap-6 xl:flex-row">
           <CustomFormField
@@ -252,18 +256,13 @@ export const RegisterForm = ({ user }: { user: User }) => {
           label="Identification type"
           placeholder="Select a identification type"
         >
-          {
-            IdentificationTypes.map((type, index) => (
-              <SelectItem
-                key={`${type}-${index}`}
-                value={type}
-              >
-                <div className="flex cursor-pointer items-center gap-2">
-                  <p>{type}</p>
-                </div>
-              </SelectItem>
-            ))
-          }
+          {IdentificationTypes.map((type, index) => (
+            <SelectItem key={`${type}-${index}`} value={type}>
+              <div className="flex cursor-pointer items-center gap-2">
+                <p>{type}</p>
+              </div>
+            </SelectItem>
+          ))}
         </CustomFormField>
         <CustomFormField
           control={form.control}
