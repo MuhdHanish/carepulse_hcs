@@ -18,7 +18,7 @@ import { FileUploader } from "../file-uploader";
 
 import { Doctors, GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "@/constance";
 import { PatientFormValidation } from "@/lib/validation";
-import { createUser } from "@/lib/actions/patient.actions";
+import { registerPatient } from "@/lib/actions/patient.actions";
 
 export const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -31,8 +31,28 @@ export const RegisterForm = ({ user }: { user: User }) => {
 
   function onSubmit(values: z.infer<typeof PatientFormValidation>) {
     startTransition(async () => {
-      const user = await createUser(values);
-      if (user) router.push(`/patients/${user?.$id}/register`);
+      try {
+        let formData;
+        if (values.identificationDocument && values.identificationDocument?.length > 0) {
+          const blobFile = new Blob(
+            [values.identificationDocument[0]],
+            { type: values.identificationDocument[0]?.type }
+          );
+          formData = new FormData();
+          formData.append("blobFile", blobFile);
+          formData.append("fileName", values.identificationDocument[0]?.name);
+        }
+        const patientData = {
+          ...values,
+          userId: user?.$id,
+          birthDate: new Date(values.birthDate),
+          identificationDocument: formData
+        };
+        const patient = await registerPatient(patientData);
+        if (patient) router.push(`/patients/${user?.$id}/new-appointment`);
+      } catch (error) {
+        console.error(error);
+      }
     });
   }
   return (
@@ -167,7 +187,7 @@ export const RegisterForm = ({ user }: { user: User }) => {
                     className="rounded-full"
                   />}
                   <p>{doctor?.name}</p>
-                </div> 
+                </div>
               </SelectItem>
             ))
           }
@@ -259,7 +279,7 @@ export const RegisterForm = ({ user }: { user: User }) => {
           label="Scanned copy of identification document"
           renderSkeleton={(field) => (
             <FormControl>
-              <FileUploader files={field.value} onChange={field.onChange}/>
+              <FileUploader files={field.value} onChange={field.onChange} />
             </FormControl>
           )}
         />
