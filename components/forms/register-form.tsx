@@ -16,24 +16,20 @@ import { Label } from "@/components/ui/label";
 import { SelectItem } from "@/components/ui/select";
 import { FileUploader } from "../file-uploader";
 
-import { Doctors, GenderOptions, IdentificationTypes } from "@/constance";
-import { UserFormValidation } from "@/lib/validation";
+import { Doctors, GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "@/constance";
+import { PatientFormValidation } from "@/lib/validation";
 import { createUser } from "@/lib/actions/patient.actions";
 
 export const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof UserFormValidation>>({
-    resolver: zodResolver(UserFormValidation),
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-    },
+  const form = useForm<z.infer<typeof PatientFormValidation>>({
+    resolver: zodResolver(PatientFormValidation),
+    defaultValues: { ...PatientFormDefaultValues },
   });
 
-  function onSubmit(values: z.infer<typeof UserFormValidation>) {
+  function onSubmit(values: z.infer<typeof PatientFormValidation>) {
     startTransition(async () => {
       const user = await createUser(values);
       if (user) router.push(`/patients/${user?.$id}/register`);
