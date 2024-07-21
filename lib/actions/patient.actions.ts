@@ -30,7 +30,7 @@ export const createUser = async (user: CreateUserParams) => {
       const documents = await users.list([Query.equal("email", [email])]);
       return documents?.users[0];
     }
-    throw new Error("An error occurred while creating a new user:", error);
+    throw new Error(`An error occurred while creating a new user: ${error.message}`);
   }
 }
 
@@ -39,7 +39,7 @@ export const getUser = async(userId: string) => {
     const user = await users.get(userId);
     return parseStringify(user);
   } catch (error: any) {
-    throw new Error("An error occurred while retrieving the user details:", error);
+    throw new Error(`An error occurred while retrieving the user details: ${error.message}`);
   }
 }
 
@@ -67,6 +67,6 @@ export const registerPatient = async({ identificationDocument, ...patientData }:
     );
     return parseStringify(patient);
   } catch (error: any) {
-    throw new Error("An error occurred while creating a new patient:", error);
+    throw new Error(`An error occurred while creating a new patient: ${error.message}`);
   }
 }
