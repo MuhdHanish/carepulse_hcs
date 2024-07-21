@@ -19,6 +19,7 @@ import PhoneInput from "react-phone-number-input";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
+import { Textarea } from "./ui/textarea";
 
 export enum EFormFieldType {
   INPUT = "input",
@@ -46,7 +47,19 @@ type TCustomFormFieldProps = {
 };
 
 const RenderField = ({ field, props }: { field: any; props: TCustomFormFieldProps; }) => {
-  const { name, fieldType, placeholder, iconSrc, iconAlt, showTimeSelect, dateFormat, renderSkeleton, children } = props;
+  const {
+    name,
+    fieldType,
+    placeholder,
+    iconSrc,
+    iconAlt,
+    showTimeSelect,
+    dateFormat,
+    renderSkeleton,
+    children,
+    disabled
+  } = props;
+  
   switch (fieldType) {
     case EFormFieldType.INPUT:
       return (
@@ -124,6 +137,17 @@ const RenderField = ({ field, props }: { field: any; props: TCustomFormFieldProp
               {children}
             </SelectContent>
           </Select>
+        </FormControl>
+      );
+    case EFormFieldType.TEXTAREA:
+      return (
+        <FormControl>
+          <Textarea
+            placeholder={placeholder}
+            {...field}
+            className="shad-textArea"
+            disabled={disabled}
+          />
         </FormControl>
       );
     default:
