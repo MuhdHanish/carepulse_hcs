@@ -44,14 +44,8 @@ type TCustomFormFieldProps = {
   renderSkeleton?: (field: any) => ReactNode;
 };
 
-const RenderField = ({
-  field,
-  props,
-}: {
-  field: any;
-  props: TCustomFormFieldProps;
-}) => {
-  const { name, fieldType, placeholder, iconSrc, iconAlt, showTimeSelect, dateFormat } = props;
+const RenderField = ({ field, props }: { field: any; props: TCustomFormFieldProps; }) => {
+  const { name, fieldType, placeholder, iconSrc, iconAlt, showTimeSelect, dateFormat, renderSkeleton } = props;
   switch (fieldType) {
     case EFormFieldType.INPUT:
       return (
@@ -79,7 +73,7 @@ const RenderField = ({
         <FormControl>
           <PhoneInput
             placeholder={placeholder}
-            defaultCountry="IN"
+            defaultCountry="US"
             {...field}
             international
             className="input-phone"
@@ -107,11 +101,15 @@ const RenderField = ({
             />
           </FormControl>
         </div>
-      )
+      );
+    case EFormFieldType.SKELETON:
+      return (
+        renderSkeleton ? renderSkeleton(field) : null
+      );
     default:
       break;
   }
-};
+}
 
 export const CustomFormField = (props: TCustomFormFieldProps) => {
   const { control, fieldType, name, label } = props;
