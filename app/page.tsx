@@ -26,7 +26,7 @@ export default function Home() {
         src={`/assets/images/onboarding-img.png`}
         height={1000}
         width={1000}
-        alt="onboarding-image"
+        alt="onboarding-side-image"
         className="side-img max-w-[50%]"
       />
     </div>
