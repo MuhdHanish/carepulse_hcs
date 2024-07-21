@@ -3,6 +3,14 @@
 import { ReactNode } from "react";
 import Image from "next/image";
 
+import { Control } from "react-hook-form";
+
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
+
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
+
 import {
   FormControl,
   FormField,
@@ -11,15 +19,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "./ui/input";
-import { Control } from "react-hook-form";
-
-import "react-phone-number-input/style.css";
-import PhoneInput from "react-phone-number-input";
-
-import "react-datepicker/dist/react-datepicker.css";
-import DatePicker from "react-datepicker";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
+import { Checkbox } from "./ui/checkbox";
 
 export enum EFormFieldType {
   INPUT = "input",
@@ -49,6 +51,7 @@ type TCustomFormFieldProps = {
 const RenderField = ({ field, props }: { field: any; props: TCustomFormFieldProps; }) => {
   const {
     name,
+    label,
     fieldType,
     placeholder,
     iconSrc,
@@ -149,6 +152,21 @@ const RenderField = ({ field, props }: { field: any; props: TCustomFormFieldProp
             disabled={disabled}
           />
         </FormControl>
+      );
+    case EFormFieldType.CHECKBOX:
+      return (
+        <div className="flex items-center gap-4">
+          <Checkbox
+            id={name}
+            checked={field.value}
+            onCheckedChange={field.onChange}
+          />
+          <label
+            htmlFor={name}
+            className="checkbox-label">
+            {label}
+          </label>
+        </div>
       );
     default:
       break;
