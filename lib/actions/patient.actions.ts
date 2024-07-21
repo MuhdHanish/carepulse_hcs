@@ -13,6 +13,7 @@ import {
 } from "../appwrite.config";
 import { parseStringify } from "../utils";
 import { InputFile } from "node-appwrite/file";
+import { Patient } from "@/types/appwrite.types";
 
 export const createUser = async (user: CreateUserParams): Promise<User> => {
   const { name, email, phone } = user;
@@ -43,7 +44,7 @@ export const getUser = async(userId: string) => {
   }
 }
 
-export const registerPatient = async({ identificationDocument, ...patientData }: RegisterUserParams) => {
+export const registerPatient = async ({ identificationDocument, ...patientData }: RegisterUserParams): Promise<Patient> => {
   try {
     let file;
     if (identificationDocument) {
