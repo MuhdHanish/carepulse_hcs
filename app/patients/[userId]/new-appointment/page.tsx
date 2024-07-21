@@ -1,9 +1,12 @@
+import { AppointmentForm } from "@/components/forms/appointment-form";
+import { getPatient } from "@/lib/actions/patient.actions";
 import Image from "next/image";
 
-export default function NewApponitment() {
+export default async function NewApponitment({ params: { userId } }: SearchParamProps) {
+  const patient = await getPatient(userId);
   return (
     <div className="flex h-screen max-h-screen">
-      <section className="remove-scrollbar container my-auto">
+      <section className="remove-scrollbar container">
         <div className="sub-container max-w-[860px] flex-1 justify-between">
           <Image
             src={`/assets/icons/logo-full.svg`}
@@ -12,6 +15,7 @@ export default function NewApponitment() {
             alt="logo"
             className="mb-12 h-10 w-fit"
           />
+          <AppointmentForm type="create" userId={userId} patientId={patient?.$id} />
           <p className="copyright py-12">© 2024 CarePluse</p>
         </div>
       </section>
