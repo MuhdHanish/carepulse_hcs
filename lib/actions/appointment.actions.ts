@@ -8,6 +8,7 @@ import {
 } from "../appwrite.config";
 import { parseStringify } from "../utils";
 import { Appointment } from "@/types/appwrite.types";
+import { revalidatePath } from "next/cache";
 
 export const createAppointment = async ({ ...appointmentData }: CreateAppointmentParams): Promise<Appointment> => {
   try {
@@ -20,6 +21,27 @@ export const createAppointment = async ({ ...appointmentData }: CreateAppointmen
     return parseStringify(appointment);
   } catch (error: any) {
     throw new Error(`An error occurred while creating a new appointment: ${error.message}`);
+  }
+}
+
+export const updateAppointment = async ({ appointmentId , appointment }: UpdateAppointmentParams): Promise<Appointment> => {
+  try {
+    const updatedAppointment = await database.updateDocument(
+      DATABASE_ID!,
+      APPOINTMENT_COLLECTION_ID!,
+      appointmentId,
+      appointment
+    );
+    if (!updatedAppointment) throw new Error(
+      `Failed to update appointment with ID ${appointmentId}. The appointment could not be found or updated.`
+    );
+
+    // TODO: SMS Notificaiton
+
+    revalidatePath(`/admin`);
+    return parseStringify(updatedAppointment);
+  } catch (error: any) {
+    throw new Error(`An error occurred while updating a appointment: ${error.message}`);
   }
 }
 
