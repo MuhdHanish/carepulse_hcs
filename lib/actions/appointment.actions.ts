@@ -23,7 +23,7 @@ export const createAppointment = async ({ ...appointmentData }: CreateAppointmen
   }
 }
 
-export const getAppointment = async (appointmentId: string) => {
+export const getAppointment = async (appointmentId: string): Promise<Appointment> => {
   try {
     const appointment = await database.getDocument(
       DATABASE_ID!,
