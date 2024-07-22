@@ -35,15 +35,15 @@ export const AppointmentForm = ({
   let status: Status;
   switch (type) {
     case "cancel":
-      buttonLabel = "Cancel appointment";
+      buttonLabel = "Cancel Appointment";
       status = "cancelled";
       break;
     case "create":
-      buttonLabel = "Create appointment";
+      buttonLabel = "Create Appointment";
       status = "pending";
       break; 
     default:
-      buttonLabel = "Schedule appointment";
+      buttonLabel = "Schedule Appointment";
       status = "scheduled";
       break;
   }
