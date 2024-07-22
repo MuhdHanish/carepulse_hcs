@@ -1,7 +1,14 @@
+import { Button } from "@/components/ui/button";
+import { Doctors } from "@/constance";
+import { getAppointment } from "@/lib/actions/appointment.actions";
+import { formatDateTime } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Success() {
+export default async function Success({ params: { userId }, searchParams }: SearchParamProps) {
+  const appointmentId = (searchParams?.appointmentId as string) || "";
+  const appointment = await getAppointment(appointmentId);
+  const doctor = Doctors.find(doctor => doctor?.name === appointment?.primaryPhysician);
   return (
     <div className="flex h-screen max-h-screen px-[5%]">
       <div className="success-img">
@@ -27,7 +34,41 @@ export default async function Success() {
           </h2>
           <p className="text-dark-700">We'll be in touch shortly to confirm.</p>
         </section>
-        {/* TODO: Requested Appointment Details */}
+        <section className="request-details">
+          <p className="text-dark-700">Requested appointment details:</p>
+          <div className="flex items-center gap-3">
+            {doctor?.image && (
+              <Image
+                src={doctor?.image!}
+                alt="doctor-image"
+                width={100}
+                height={100}
+                className="size-6"
+              />
+            )}
+            {doctor?.name && (
+              <p className="whitespace-nowrap">Dr. {doctor?.name!}</p>
+            )}
+          </div>
+          {appointment?.schedule && (
+            <div className="flex gap-2">
+              <Image
+                src={`/assets/icons/calendar.svg`}
+                height={24}
+                width={24}
+                alt="calender-icon"
+              />
+              <p>{formatDateTime(appointment?.schedule!)?.dateTime}</p>
+            </div>
+          )}
+        </section>
+        <Button
+          className="shad-primary-btn" asChild>
+          <Link href={`/patients/${userId}/new-appointment`}>
+            New Appointment
+          </Link>
+        </Button>
+        <p className="copyright">© 2024 CarePluse</p>
       </div>
     </div>
   );
