@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Image from "next/image";
 
 export type TStatsCardProp = {
-  type: "scheduled" | "pending" | "cancelled";
+  type: Status;
   count: number;
   label: string;
   icon: string;

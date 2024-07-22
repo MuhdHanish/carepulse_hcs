@@ -8,7 +8,6 @@ import {
 } from "../appwrite.config";
 import { parseStringify } from "../utils";
 import { Appointment } from "@/types/appwrite.types";
-import { TStatsCardProp } from "@/components/cards/stats-card";
 
 export const createAppointment = async ({ ...appointmentData }: CreateAppointmentParams): Promise<Appointment> => {
   try {
@@ -38,7 +37,7 @@ export const getAppointment = async (appointmentId: string): Promise<Appointment
 }
 
 type TInitialCounts = {
-  [K in TStatsCardProp["type"]]: number;
+  [K in Status]: number;
 };
 
 export type TGetRecentAppointmentsReturn = {
