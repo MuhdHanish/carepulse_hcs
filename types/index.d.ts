@@ -22,12 +22,12 @@ declare interface RegisterUserParams extends CreateUserParams {
   birthDate: Date;
   gender: Gender;
   address: string;
-  occupation: string;
+  occupation?: string | undefined;
   emergencyContactName: string;
   emergencyContactNumber: string;
   primaryPhysician: string;
-  insuranceProvider: string;
-  insurancePolicyNumber: string;
+  insuranceProvider?: string | undefined;
+  insurancePolicyNumber?: string | undefined;
   allergies?: string | undefined;
   currentMedication?: string | undefined;
   familyMedicalHistory?: string | undefined;
@@ -36,6 +36,8 @@ declare interface RegisterUserParams extends CreateUserParams {
   identificationNumber?: string | undefined;
   identificationDocument?: FormData | undefined;
   privacyConsent: boolean;
+  treatmentConsent: boolean;
+  disclosureConsent: boolean;
 }
 
 declare type CreateAppointmentParams = {
