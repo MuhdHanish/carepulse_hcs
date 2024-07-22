@@ -1,4 +1,6 @@
 import { StatsCard } from "@/components/cards/stats-card";
+import { columns } from "@/components/table/columns";
+import { DataTable } from "@/components/table/data-table";
 import { getRecentAppointmentsList } from "@/lib/actions/appointment.actions";
 import Image from "next/image";
 import Link from "next/link";
@@ -44,6 +46,7 @@ export default async function Admin() {
             icon={`/assets/icons/cancelled.svg`}
           />
         </section>
+        <DataTable columns={columns} data={appointments} />
       </main>
     </div>
   );
