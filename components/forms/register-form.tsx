@@ -305,7 +305,7 @@ export const RegisterForm = ({ user }: { user: User }) => {
           name="privacyConsent"
           label="I acknowledge that I have reviewed and agree to the privacy policy."
         />
-        <SubmitButton isLoading={isPending}>Get Started</SubmitButton>
+        <SubmitButton isLoading={isPending}>Complete Registration</SubmitButton>
       </form>
     </Form>
   );
