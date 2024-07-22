@@ -92,7 +92,7 @@ export function DataTable<TData, TValue>({
             src={`/assets/icons/arrow.svg`}
             width={24}
             height={24}
-            alt="arrow-left-icon"
+            alt="arrow-icon"
           />
           </Button>
           <Button
@@ -106,7 +106,7 @@ export function DataTable<TData, TValue>({
             src={`/assets/icons/arrow.svg`}
             width={24}
             height={24}
-            alt="arrow-right-icon"
+            alt="arrow-icon"
             className="rotate-180"
           />
           </Button>
