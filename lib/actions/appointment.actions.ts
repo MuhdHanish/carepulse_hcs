@@ -18,6 +18,7 @@ export const createAppointment = async ({ ...appointmentData }: CreateAppointmen
       ID.unique(),
       { ...appointmentData }
     );
+    revalidatePath(`/admin`);
     return parseStringify(appointment);
   } catch (error: any) {
     throw new Error(`An error occurred while creating a new appointment: ${error.message}`);
