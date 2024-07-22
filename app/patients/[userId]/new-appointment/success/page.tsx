@@ -58,7 +58,7 @@ export default async function Success({ params: { userId }, searchParams }: Sear
                 width={24}
                 alt="calender-icon"
               />
-              <p>{formatDateTime(appointment?.schedule!)?.dateTime}</p>
+              <p>{formatDateTime(appointment?.schedule)?.dateTime}</p>
             </div>
           )}
         </section>
