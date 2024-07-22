@@ -28,8 +28,8 @@ export const PatientFormValidation = z.object({
     .max(100, "Address must be at most 100 characters."),
   occupation: z
     .string()
-    .min(2, "Occupation must be at least 2 characters.")
-    .max(100, "Occupation must be at most 100 characters."),
+    .max(100, "Occupation must be at most 100 characters.")
+    .optional(),
   emergencyContactName: z
     .string()
     .min(2, "Contact name must be at least 2 characters.")
@@ -43,12 +43,12 @@ export const PatientFormValidation = z.object({
   primaryPhysician: z.string().min(2, "Select at least one doctor."),
   insuranceProvider: z
     .string()
-    .min(2, "Insurance name must be at least 2 characters.")
-    .max(50, "Insurance name must be at most 50 characters."),
+    .max(50, "Insurance name must be at most 50 characters.")
+    .optional(),
   insurancePolicyNumber: z
     .string()
-    .min(2, "Policy number must be at least 2 characters.")
-    .max(50, "Policy number must be at most 50 characters."),
+    .max(50, "Policy number must be at most 50 characters.")
+    .optional(),
   allergies: z.string().optional(),
   currentMedication: z.string().optional(),
   familyMedicalHistory: z.string().optional(),
