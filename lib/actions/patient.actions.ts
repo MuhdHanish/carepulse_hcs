@@ -28,29 +28,40 @@ export const createUser = async (user: CreateUserParams): Promise<User> => {
     return parseStringify(newUser);
   } catch (error: any) {
     if (error && error?.code === 409) {
-      const documents = await users.list([Query.equal("email", [email])]);
-      return documents?.users[0];
+      const documents = await users.list([
+        Query.and([
+          Query.equal("email", [email]),
+          Query.equal("phone", [phone]),
+        ]),
+      ]);
+      if (documents?.users[0]) return documents?.users[0];
+      else throw new Error(`This email or phone number is already in use (not both).`);
     }
-    throw new Error(`An error occurred while creating a new user: ${error.message}`);
+    throw new Error(`The server may be experiencing issues. Please try again later.`);
   }
 }
 
-export const getUser = async(userId: string) => {
+export const getUser = async (userId: string) => {
   try {
     const user = await users.get(userId);
     return parseStringify(user);
   } catch (error: any) {
-    throw new Error(`An error occurred while retrieving the user details: ${error.message}`);
+    throw new Error(
+      `An error occurred while retrieving the user details: ${error.message}`
+    );
   }
 }
 
-export const registerPatient = async ({ identificationDocument, ...patientData }: RegisterUserParams): Promise<Patient> => {
+export const registerPatient = async ({
+  identificationDocument,
+  ...patientData
+}: RegisterUserParams): Promise<Patient> => {
   try {
     let file;
     if (identificationDocument) {
       const inputFile = InputFile.fromBuffer(
-        identificationDocument?.get('blobFile') as Blob,
-        identificationDocument?.get('fileName') as string
+        identificationDocument?.get("blobFile") as Blob,
+        identificationDocument?.get("fileName") as string
       );
       file = await storage.createFile(BUCKET_ID!, ID.unique(), inputFile);
     }
@@ -61,14 +72,16 @@ export const registerPatient = async ({ identificationDocument, ...patientData }
       {
         identificationDocumentId: file?.$id || null,
         identificationDocumentUrl: file?.$id
-          ? `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/view??project=${PROJECT_ID}`
+          ? `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/view?project=${PROJECT_ID}`
           : null,
-        ...patientData
+        ...patientData,
       }
     );
     return parseStringify(patient);
   } catch (error: any) {
-    throw new Error(`An error occurred while creating a new patient: ${error.message}`);
+    throw new Error(
+      `An error occurred while creating a new patient: ${error.message}`
+    );
   }
 }
 
@@ -81,6 +94,8 @@ export const getPatient = async (userId: string) => {
     );
     return parseStringify(patients?.documents[0]);
   } catch (error: any) {
-    throw new Error(`An error occurred while retrieving the patient details: ${error.message}`);
+    throw new Error(
+      `An error occurred while retrieving the patient details: ${error.message}`
+    );
   }
 }
