@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
+import { SonnerToastProiver } from "@/components/sonner-toast-provider";
 
 const fontSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
           defaultTheme="dark"
         >
           {children}
+          <SonnerToastProiver/>
         </ThemeProvider>
       </body>
     </html>
