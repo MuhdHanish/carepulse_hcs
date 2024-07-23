@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Form } from "@/components/ui/form";
+import { Form, FormMessage } from "@/components/ui/form";
 import { CustomFormField, EFormFieldType } from "../custom-form-field";
 import { SubmitButton } from "../submit-button";
 import { SelectItem } from "../ui/select";
@@ -34,6 +34,7 @@ export const AppointmentForm = ({
   setOpen
 }: TAppointmentForm) => {
   const router = useRouter();
+  const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
 
   let buttonLabel;
@@ -66,6 +67,7 @@ export const AppointmentForm = ({
   });
 
   function onSubmit(values: z.infer<typeof AppointmentSchema>) {
+    setError("");
     startTransition(async () => {
       try {
         if (type === "create" && patientId) {
@@ -94,8 +96,8 @@ export const AppointmentForm = ({
             form.reset();
           }
         }
-      } catch (error) {
-        console.error(error);
+      } catch (error: any) {
+        setError("Something went wrong. Please try again later.");
       }
     });
   }
@@ -173,6 +175,7 @@ export const AppointmentForm = ({
             placeholder="ex: Urgent meeting came up"
           />
         )}
+        <FormMessage className="shad-error" children={error} />
         <SubmitButton
           isLoading={isPending}
           className={`${type === "cancel" ? "shad-danger-btn" : "shad-primary-btn"} w-full`}

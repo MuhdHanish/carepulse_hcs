@@ -1,13 +1,13 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Form } from "@/components/ui/form";
+import { Form, FormMessage } from "@/components/ui/form";
 import { CustomFormField, EFormFieldType } from "../custom-form-field";
 import { SubmitButton } from "../submit-button";
 
@@ -16,6 +16,7 @@ import { createUser } from "@/lib/actions/patient.actions";
 
 export const PatientForm = () => {
   const router = useRouter();
+  const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof UserFormValidation>>({
@@ -28,6 +29,7 @@ export const PatientForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof UserFormValidation>) {
+    setError("");
     startTransition(async () => {
       try {
         const userData: CreateUserParams = {
@@ -35,8 +37,8 @@ export const PatientForm = () => {
         };
         const user = await createUser(userData);
         if (user) router.push(`/patients/${user?.$id}/register`);
-      } catch (error) {
-        console.error(error);
+      } catch (error: any) {
+        setError(error?.message || "Something went wrong. Please try again later.");
       }
     });
   }
@@ -74,6 +76,7 @@ export const PatientForm = () => {
           label="Phone number"
           placeholder="(999) 999-999"
         />
+        <FormMessage className="shad-error" children={error} />
         <SubmitButton isLoading={isPending}>Get Started</SubmitButton>
       </form>
     </Form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Form, FormControl } from "@/components/ui/form";
+import { Form, FormControl, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CustomFormField, EFormFieldType } from "../custom-form-field";
 import { SubmitButton } from "../submit-button";
@@ -27,6 +27,7 @@ import { registerPatient } from "@/lib/actions/patient.actions";
 
 export const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
+  const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof PatientFormValidation>>({
@@ -35,6 +36,7 @@ export const RegisterForm = ({ user }: { user: User }) => {
   });
 
   function onSubmit(values: z.infer<typeof PatientFormValidation>) {
+    setError("");
     startTransition(async () => {
       try {
         let formData;
@@ -57,8 +59,8 @@ export const RegisterForm = ({ user }: { user: User }) => {
         };
         const patient = await registerPatient(patientData);
         if (patient) router.push(`/patients/${user?.$id}/new-appointment`);
-      } catch (error) {
-        console.error(error);
+      } catch (error: any) {
+        setError("Something went wrong. Please try again later.");
       }
     });
   }
@@ -305,6 +307,7 @@ export const RegisterForm = ({ user }: { user: User }) => {
           name="privacyConsent"
           label="I acknowledge that I have reviewed and agree to the privacy policy."
         />
+        <FormMessage className="shad-error" children={error} />
         <SubmitButton isLoading={isPending}>Complete Registration</SubmitButton>
       </form>
     </Form>
