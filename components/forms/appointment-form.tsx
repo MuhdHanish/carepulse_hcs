@@ -83,6 +83,8 @@ export const AppointmentForm = ({
           if (appointment) router.push(`/patients/${userId}/new-appointment/success?appointmentId=${appointment?.$id}`);
         } else {
           const appointmentToUpdate: UpdateAppointmentParams = {
+            userId,
+            type: type as "cancel" | "schedule",
             appointmentId: appointment?.$id!,
             appointment: {
               ...values,
