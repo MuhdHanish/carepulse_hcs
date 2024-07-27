@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CasePulse
+
+**CasePulse** is an advanced healthcare management system designed to streamline interactions between patients and medical staff. The system provides various features to manage appointments, handle user registrations, and monitor appointment statistics efficiently.
+
+## Features
+
+### User Management
+- **Create Account**: Allows users to create an account by entering basic details.
+- **Register**: Enables patients to register for appointments by providing basic and personal details, medical information, primary physician details, identification, verification, and content privacy settings.
+
+### Appointment Management
+- **New Appointment**: Schedule new appointments by specifying the doctor, date and time, reason, and additional notes.
+- **Admin Dashboard**: 
+  - **Admin Authentication**: Admins can verify their access using a passkey.
+  - **Stats Cards**: View statistics with counts of pending, scheduled, and canceled appointments.
+  - **Appointments Table**: Manage appointments with various actions.
+  - **Schedule Appointment**: Admins can schedule appointments by selecting a doctor, adding notes, specifying reasons, and setting the date and time.
+  - **Cancel Appointment**: Admins can cancel appointments with reasons provided.
+
+### Notifications
+- **SMS Notifications**: When appointments are scheduled or canceled, an SMS notification is sent to the patient using Twilio's service. (Currently configured to send only to a specific number using Twilio’s free tier).
+
+### Error Tracking and Notifications
+- **Sentry**: Integrated with Sentry for error tracking and monitoring.
+- **Sonner**: Utilizes toast notifications for form submission success messages.
+
+## Tech Stack
+
+- **Frontend**: 
+  - **Next.js**: Framework for server-rendered React applications.
+  - **TypeScript**: Typed JavaScript for enhanced code quality and maintainability.
+  - **Tailwind CSS**: Utility-first CSS framework for styling.
+  - **Shadcn**: Component library for UI elements.
+  - **React Hook Form**: Library for managing form state with Zod for validation.
+- **Backend**: 
+  - **Appwrite**: Backend server for authentication, database, and file storage, including Appwrite Messaging for notifications.
+  - **Twilio**: SMS service for sending notifications.
+- **Error Tracking**: Sentry (for tracking and managing errors).
+- **Notifications**: Sonner (for toast notifications on form submit success).
 
 ## Getting Started
 
-First, run the development server:
+1. **Clone the Repository**:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```bash
+   git clone https://github.com/MuhdHanish/carepulse_hcs.git
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Install Dependencies**:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   Navigate to the project directory and install the dependencies:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+   ```bash
+   cd carepulse_hcs
+   npm install
+   ```
 
-## Learn More
+3. **Set Up Environment Variables**:
 
-To learn more about Next.js, take a look at the following resources:
+   Create a `.env` file in the root directory based on the `.env.example` file provided:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   cp .env.example .env
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   Then, fill in the required environment variables with your actual values in the `.env` file.
 
-## Deploy on Vercel
+4. **Start the Application**:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   Run the development server:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   ```bash
+   npm run dev
+   ```
+
+## Environment Variables
+
+Ensure all necessary variables are provided for the application to run correctly. The required variables can be found and set in the `.env.example` file. Copy this file to `.env` and fill in the appropriate values.
+
+## Feedback
+
+If you have any feedback, please reach me at [muhammedhanish11@gmail.com](mailto:muhammedhanish11@gmail.com) or connect with me on [LinkedIn](https://www.linkedin.com/in/muhdhanish/).
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and create a pull request with your changes. Make sure to follow the project's coding standards and include relevant tests.
+
+## Support
+
+Show your support by 🌟 the project!!
