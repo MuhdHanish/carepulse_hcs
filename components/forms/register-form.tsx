@@ -24,6 +24,8 @@ import {
 } from "@/constance";
 import { PatientFormValidation } from "@/lib/validation";
 import { registerPatient } from "@/lib/actions/patient.actions";
+import { toast } from "sonner";
+import { formatDateTime } from "@/lib/utils";
 
 export const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -58,7 +60,10 @@ export const RegisterForm = ({ user }: { user: User }) => {
           identificationDocument: formData,
         };
         const patient = await registerPatient(patientData);
-        if (patient) router.push(`/patients/${user?.$id}/new-appointment`);
+        if (patient) {
+          toast("Patient has been created successfully", { description: formatDateTime(new Date()).dateTime });
+          router.push(`/patients/${user?.$id}/new-appointment`);
+        }
       } catch (error: any) {
         setError("Something went wrong. Please try again later.");
       }

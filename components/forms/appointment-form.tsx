@@ -17,6 +17,8 @@ import { getAppointmentSchema } from "@/lib/validation";
 import { Doctors } from "@/constance";
 import { createAppointment, updateAppointment } from "@/lib/actions/appointment.actions";
 import { Appointment } from "@/types/appwrite.types";
+import { toast } from "sonner";
+import { formatDateTime } from "@/lib/utils";
 
 type TAppointmentForm = {
   type: "create" | "cancel" | "schedule";
@@ -80,7 +82,10 @@ export const AppointmentForm = ({
             status
           };
           const appointment = await createAppointment(appointmentData);
-          if (appointment) router.push(`/patients/${userId}/new-appointment/success?appointmentId=${appointment?.$id}`);
+          if (appointment) {
+            toast("Appointment has been created successfully", { description: formatDateTime(new Date()).dateTime });
+            router.push(`/patients/${userId}/new-appointment/success?appointmentId=${appointment?.$id}`);
+          }
         } else {
           const appointmentToUpdate: UpdateAppointmentParams = {
             userId,
@@ -94,6 +99,7 @@ export const AppointmentForm = ({
           };
           const updatedAppointment = await updateAppointment(appointmentToUpdate);
           if (updatedAppointment) {
+            toast(`Appointment has been ${type == "schedule" ? "scheduled" : "cancelled"} successfully`, { description: formatDateTime(new Date()).dateTime });
             setOpen && setOpen(false);
             form.reset();
           }
