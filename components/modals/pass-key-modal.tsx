@@ -48,7 +48,9 @@ export const PasskeyModal = () => {
 
   const validatePasskey = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    if (passkey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
+    if (passkey.length !== 6) {
+      setError("Please enter a valid passkey.");
+    } else if (passkey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
       setError("");
       const encryptedKey = encryptKey(passkey);
       localStorage.setItem('carepulse_admin_access_key', encryptedKey);
