@@ -5,8 +5,9 @@ import {
   DATABASE_ID,
   APPOINTMENT_COLLECTION_ID,
   database,
+  messaging,
 } from "../appwrite.config";
-import { parseStringify } from "../utils";
+import { formatDateTime, parseStringify } from "../utils";
 import { Appointment } from "@/types/appwrite.types";
 import { revalidatePath } from "next/cache";
 
@@ -25,7 +26,7 @@ export const createAppointment = async ({ ...appointmentData }: CreateAppointmen
   }
 }
 
-export const updateAppointment = async ({ appointmentId , appointment }: UpdateAppointmentParams): Promise<Appointment> => {
+export const updateAppointment = async ({ userId, type, appointmentId, appointment }: UpdateAppointmentParams): Promise<Appointment> => {
   try {
     const updatedAppointment = await database.updateDocument(
       DATABASE_ID!,
@@ -37,12 +38,39 @@ export const updateAppointment = async ({ appointmentId , appointment }: UpdateA
       `Failed to update appointment with ID ${appointmentId}. The appointment could not be found or updated.`
     );
 
-    // TODO: SMS Notificaiton
+    let messageContent = "";
+    switch (type) {
+      case "schedule":
+        messageContent = `This is from Carepulse,
+Your appointment with Dr. ${appointment?.primaryPhysician} has been scheduled for ${formatDateTime(appointment?.schedule)?.dateTime}.
+If you have any questions, please contact us.`;
+        break;
+      case "cancel":
+        messageContent = `This is from Carepulse,
+We regret to inform you that your appointment with Dr. ${appointment?.primaryPhysician}, scheduled for ${formatDateTime(appointment?.schedule)?.dateTime}, has been canceled.
+${appointment?.cancellationReason && `Reason for cancellation: ${appointment?.cancellationReason}`}
+If you have any questions or need to reschedule, please contact us. We apologize for any inconvenience this may have caused.`;
+        break;
+      default:
+        messageContent = `This is from Carepulse,
+Your appointment with Dr.  ${appointment?.primaryPhysician} on ${formatDateTime(appointment?.schedule)?.dateTime} has been updated.
+If you have any questions, please contact us.`;
+        break;
+    }
+    await sendSMSNotification(userId, messageContent);
 
     revalidatePath(`/admin`);
     return parseStringify(updatedAppointment);
   } catch (error: any) {
     throw new Error(`An error occurred while updating a appointment: ${error.message}`);
+  }
+}
+
+const sendSMSNotification = async (userId: string, content: string) => {
+  try {
+    await messaging.createSms(ID.unique(), content, [], [userId]);
+  } catch (error: any) {
+    throw new Error(`An error occurred while sending sms notification: ${error.message}`);
   }
 }
 
