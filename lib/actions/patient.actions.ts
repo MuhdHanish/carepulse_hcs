@@ -41,7 +41,7 @@ export const createUser = async (user: CreateUserParams): Promise<User> => {
   }
 }
 
-export const getUser = async (userId: string) => {
+export const getUser = async (userId: string): Promise<User> => {
   try {
     const user = await users.get(userId);
     return parseStringify(user);
@@ -85,7 +85,7 @@ export const registerPatient = async ({
   }
 }
 
-export const getPatient = async (userId: string) => {
+export const getPatient = async (userId: string): Promise<Patient> => {
   try {
     const patients = await database.listDocuments(
       DATABASE_ID!,
