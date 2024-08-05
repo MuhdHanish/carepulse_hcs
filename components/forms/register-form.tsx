@@ -61,7 +61,7 @@ export const RegisterForm = ({ user }: { user: User }) => {
         };
         const patient = await registerPatient(patientData);
         if (patient) {
-          toast("Patient has been created successfully", { description: formatDateTime(new Date()).dateTime });
+          toast("Registration has been completed successfully", { description: formatDateTime(new Date()).dateTime });
           router.push(`/patients/${user?.$id}/new-appointment`);
         }
       } catch (error: any) {
