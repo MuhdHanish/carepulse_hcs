@@ -13,8 +13,6 @@ import { SubmitButton } from "../submit-button";
 
 import { UserFormValidation } from "@/lib/validation";
 import { createUser } from "@/lib/actions/patient.actions";
-import { toast } from "sonner";
-import { formatDateTime } from "@/lib/utils";
 
 export const PatientForm = () => {
   const router = useRouter();
@@ -39,7 +37,6 @@ export const PatientForm = () => {
         };
         const user = await createUser(userData);
         if (user) {
-          toast("User has been created successfully", { description: formatDateTime(new Date()).dateTime });
           router.push(`/patients/${user?.$id}/register`);
         }
       } catch (error: any) {
